@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "main.h" 
+#include "main.h"
 /**
  * _printf - print function
  * @format: given string
@@ -8,9 +8,10 @@
 */
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, ibuf = 0;
+	unsigned int i = 0, j, ibuf = 0;
 	va_list ptr;
 	char *buffer;
+	char *str;
 
 	va_start(ptr, format);
 	buffer = malloc(sizeof(char) * 1024);
@@ -18,24 +19,47 @@ int _printf(const char *format, ...)
 		return (1);
 	while (format && format[i])
 	{
-	if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's'))
+	if (format[i] == '%')
 	{
+		if (format[i + 1] == '\0')
+		{
+			write(1, buffer, ibuf);
+			free(buffer);
+			va_end(ptr);
+			return (-1);
+		}
+		else
+		{
 		switch (format[i + 1])
 		{
 			case 'c':
-				write(1, buffer, ibuf);
-				free(buffer);
+				buffer[ibuf] = va_arg(ptr, char *);
+				ibuf++;
+				i++;
 				break;
 			case 's':
-				printf("%s\n", va_arg(ptr, char *));
+				j = 0;
+				str = va_arg(ptr, char *);
+				for (; str[j]; j++)
+				{
+					buffer[ibuf] = str[j];
+					ibuf++;
+				}
+				i++;
 				break;
+
+		}
 		}
 	}
 	else
 	{
-	printf("%c", format[i]);
+			buffer[ibuf] = format[i];
+			ibuf++;
 	}
 	i++;
 	}
+	buffer[ibuf] = '\0';
+	write(1, buffer, ibuf);
 	va_end(ptr);
+	free(buffer);
 }
