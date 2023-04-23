@@ -62,4 +62,5 @@ int _printf(const char *format, ...)
 	write(1, buffer, ibuf);
 	va_end(ptr);
 	free(buffer);
+	return (ibuf);
 }
