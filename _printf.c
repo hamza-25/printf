@@ -34,7 +34,7 @@ int _printf(const char *format, ...)
 		switch (format[i + 1])
 		{
 			case 'c':
-				buffer[ibuf] = va_arg(ptr, char *);
+				buffer[ibuf] = va_arg(ptr, int);
 				ibuf++;
 				i++;
 				break;
