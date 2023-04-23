@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "main.h" 
 /**
  * _printf - print function
@@ -7,10 +8,14 @@
 */
 int _printf(const char *format, ...)
 {
-	int i = 0;
+	unsigned int i = 0, ibuf = 0;
 	va_list ptr;
+	char *buffer;
 
 	va_start(ptr, format);
+	buffer = malloc(sizeof(char) * 1024);
+	if (buffer == NULL)
+		return (1);
 	while (format && format[i])
 	{
 	if (format[i] == '%' && (format[i + 1] == 'c' || format[i + 1] == 's'))
@@ -18,7 +23,8 @@ int _printf(const char *format, ...)
 		switch (format[i + 1])
 		{
 			case 'c':
-				printf("%c\n", va_arg(ptr, char *));
+				write(1, buffer, ibuf);
+				free(buffer);
 				break;
 			case 's':
 				printf("%s\n", va_arg(ptr, char *));
@@ -30,4 +36,6 @@ int _printf(const char *format, ...)
 	printf("%c", format[i]);
 	}
 	i++;
+	}
+	va_end(ptr);
 }
