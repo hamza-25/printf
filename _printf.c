@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	char *str;
 
 	va_start(ptr, format);
-	buffer = malloc(sizeof(char) * 1024);
+	buffer = malloc(sizeof(char) * 100);
 	if (buffer == NULL)
 		return (1);
 	while (format && format[i])
