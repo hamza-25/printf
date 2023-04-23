@@ -29,6 +29,12 @@ int _printf(const char *format, ...)
 			va_end(ptr);
 			return (-1);
 		}
+		else if (format[i + 1] == '%')
+		{
+			buffer[ibuf] = format[i + 1];
+			ibuf++;
+			i++;
+		}
 		else
 		{
 		switch (format[i + 1])
