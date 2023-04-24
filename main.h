@@ -6,6 +6,6 @@
 #include <stdlib.h>
 
 int _printf(const char *format, ...);
-unsigned int handl_buf(char *buffer, char c, unsigned int ibuf)
+unsigned int handle_buffer(char *buffer, char c, unsigned int ibuf)
   
 #endif
