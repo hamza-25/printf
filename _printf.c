@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	char *str;
 
 	va_start(ptr, format);
-	buffer = malloc(sizeof(char) * 100);
+	buffer = malloc(sizeof(char) * 1024);
 	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
 	if (!format[i])
