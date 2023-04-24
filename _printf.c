@@ -1,74 +1,65 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include "main.h"
+
+void print_buffer(char buffer[], int *buff_ind);
+
 /**
- * _printf - print function
- * @format: given string
- * Return: always 0
-*/
+ * _printf - Printf function
+ * @format: format.
+ * Return: Printed chars.
+ */
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, j, ibuf = 0;
-	va_list ptr;
-	char *buffer;
-	char *str;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
-	va_start(ptr, format);
-	buffer = malloc(sizeof(char) * 1024);
-	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
+	if (format == NULL)
 		return (-1);
-	if (!format[i])
-		return (0);
-	while (format && format[i])
+
+	va_start(list, format);
+
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-	if (format[i] == '%')
-	{
-		if (format[i + 1] == '\0')
+		if (format[i] != '%')
 		{
-			write(1, buffer, ibuf);
-			free(buffer);
-			va_end(ptr);
-			return (-1);
-		}
-		else if (format[i + 1] == '%')
-		{
-			buffer[ibuf] = format[i + 1];
-			ibuf++;
-			i++;
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			printed_chars++;
 		}
 		else
 		{
-		switch (format[i + 1])
-		{
-			case 'c':
-				buffer[ibuf] = va_arg(ptr, int);
-				ibuf++;
-				i++;
-				break;
-			case 's':
-				j = 0;
-				str = va_arg(ptr, char *);
-				for (; str[j]; j++)
-				{
-					buffer[ibuf] = str[j];
-					ibuf++;
-				}
-				i++;
-				break;
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
+		}
+	}
 
-		}
-		}
-	}
-	else
-	{
-			buffer[ibuf] = format[i];
-			ibuf++;
-	}
-	i++;
-	}
-	buffer[ibuf] = '\0';
-	write(1, buffer, ibuf);
-	va_end(ptr);
-	free(buffer);
-	return (ibuf);
+	print_buffer(buffer, &buff_ind);
+
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - Prints the contents of the buffer if it exist
+ * @buffer: Array of chars
+ * @buff_ind: Index at which to add next char, represents the length.
+ */
+void print_buffer(char buffer[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
 }
