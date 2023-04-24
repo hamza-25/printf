@@ -56,6 +56,6 @@ int _printf(const char *format, ...)
 	} i++;
 	}
 	buffer[ibuf] = '\0';
-	write(1, buffer, ibuf), va_end(ptr), free(buffer) ;
+	write(1, buffer, ibuf), va_end(ptr), free(buffer);
 	return (ibuf);
 }
