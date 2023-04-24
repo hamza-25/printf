@@ -48,7 +48,7 @@ int _printf(const char *format, ...)
 				break;
 			case 's':
 				j = 0;
-				str = va_arg(ptr, int);
+				str = va_arg(ptr, char *);
 				for (; str[j]; j++)
 				{
 					buffer[ibuf] = str[j];
