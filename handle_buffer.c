@@ -7,9 +7,9 @@
  * @ibuf: index of buffer pointer
  * Return: index of buffer pointer
 */
-unsigned int handl_buf(char *buffer, char c, unsigned int ibuf)
+unsigned int handl_buffer(char *buff, char c, unsigned int ibuf)
 {
-	buffer[ibuf] = c;
+	buff[ibuf] = c;
 	ibuf++;
 	return (ibuf);
 }
