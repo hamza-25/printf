@@ -42,13 +42,13 @@ int _printf(const char *format, ...)
 		switch (format[i + 1])
 		{
 			case 'c':
-				buffer[ibuf] = va_arg(ptr, char *);
+				buffer[ibuf] = va_arg(ptr, int);
 				ibuf++;
 				i++;
 				break;
 			case 's':
 				j = 0;
-				str = va_arg(ptr, char *);
+				str = va_arg(ptr, int);
 				for (; str[j]; j++)
 				{
 					buffer[ibuf] = str[j];
